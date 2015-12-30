@@ -12,14 +12,12 @@ namespace FerryBackendB
 
         public bool CancelCustomerReservation(Reservation reservation)
         {
-            ReservationHandler.CancelCustomerReservation(reservation);
-            throw new NotImplementedException();
+            return ReservationHandler.CancelCustomerReservation(reservation);
         }
 
         public bool CreateCustomer(Contract.dto.Customer customer)
         {
-            Customer c = CustomerHandler.CreateCustomer(customer);
-            return (c.CustomerId != 0);
+            return (CustomerHandler.CreateCustomer(customer).CustomerId != 0);
         }
 
         public Reservation CreateCustomerReservation(Trip trip, Contract.dto.Customer customer, double totalPrice, int numberOfPeople, Vehicle vehicle)
@@ -34,14 +32,12 @@ namespace FerryBackendB
 
         public List<Trip> GetAllTrips()
         {
-            //´Holy shit. In a few years thats a big list....
-            // Let's make this! And return a million trips....
             return TripHandler.GetAllTrips();
         }
 
         public Contract.dto.Customer GetCustomerByLogin(string username, string password)
         {
-            return CustomerHandler.ReadCustomerByLogin(username, password);
+            return CustomerHandler.ReadCustomer(username, password);
         }
     }
 }

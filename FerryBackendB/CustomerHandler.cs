@@ -13,7 +13,16 @@ namespace FerryBackendB
             throw new NotImplementedException();
         }
 
-        public static Contract.dto.Customer ReadCustomerByLogin(string username, string password)
+        public static Contract.dto.Customer ReadCustomer(string username, string password)
+        {
+            throw new NotImplementedException();
+        }
+        public static Contract.dto.Customer ReadCustomer(string mail)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static List<Contract.dto.Customer> ReadAllCustomer()
         {
             throw new NotImplementedException();
         }

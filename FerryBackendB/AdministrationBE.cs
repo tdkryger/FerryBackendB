@@ -17,192 +17,171 @@ namespace FerryBackendB
 
         public Dock CreateDock(Dock dock)
         {
-            throw new NotImplementedException();
+            return DockHandler.CreateDock(dock);
         }
 
         public Ferry CreateFerry(Ferry ferry)
         {
-            throw new NotImplementedException();
+            return FerryHandler.CreateFerry(ferry);
         }
 
         public Reservation CreateReservation(Reservation reservation)
         {
-            throw new NotImplementedException();
+            return ReservationHandler.CreateReservation(reservation);
         }
 
         public Route CreateRoute(Route route)
         {
-            throw new NotImplementedException();
+            return RouteHandler.CreateRoute(route);
         }
 
         public Trip CreateTrip(Trip trip)
         {
-            throw new NotImplementedException();
+            return TripHandler.CreateTrip(trip);
         }
 
         public Vehicle CreateVehicle(Vehicle vehicle)
         {
-            throw new NotImplementedException();
+            return VehicleHandler.CreateVehicle(vehicle);
         }
 
-        public bool DeleteCustomer(Contract.dto.Customer customer)
+        public bool DeleteCustomer(Customer customer)
         {
-            throw new NotImplementedException();
+            return CustomerHandler.DeleteCustomer(customer);
         }
-
-        public bool DeleteCustomer(CustomerBE customer)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool DeleteDock(Dock dock)
         {
-            throw new NotImplementedException();
+            return DockHandler.DeleteDock(dock);
         }
 
         public bool DeleteFerry(Ferry ferry)
         {
-            throw new NotImplementedException();
+            return FerryHandler.DeleteFerry(ferry);
         }
 
         public bool DeleteReservation(Reservation reservation)
         {
-            throw new NotImplementedException();
+            return ReservationHandler.DeleteReservation(reservation);
         }
 
         public bool DeleteRoute(Route route)
         {
-            throw new NotImplementedException();
+            return RouteHandler.DeleteRoute(route);
         }
 
         public bool DeleteTrip(Trip trip)
         {
-            throw new NotImplementedException();
+            return TripHandler.DeleteTrip(trip);
         }
 
         public bool DeleteVehicle(Vehicle vehicle)
         {
-            throw new NotImplementedException();
-        }
-
-        public List<CustomerBE> GetAllCustomer()
-        {
-            throw new NotImplementedException();
+            return VehicleHandler.DeleteVehicle(vehicle);
         }
 
         public List<Dock> GetAllDocks()
         {
-            throw new NotImplementedException();
+            return DockHandler.GetAllDocks(); // Weeee
         }
 
-        public List<Ferry> GetAllFerries()
+        public List<Ferry> GetAllFerries() // Weeee
         {
-            throw new NotImplementedException();
+            return FerryHandler.GetAllFerries();
         }
 
-        public List<Reservation> GetAllReservations()
+        public List<Reservation> GetAllReservations() // Weeee
         {
-            throw new NotImplementedException();
+            return ReservationHandler.ReadAllReservations();
         }
 
-        public List<Route> GetAllRoutes()
+        public List<Route> GetAllRoutes() // Weeee
         {
-            throw new NotImplementedException();
+            return RouteHandler.GetAllRoutes();
         }
 
-        public List<Trip> GetAllTrips()
+        public List<Trip> GetAllTrips() // Weeee
         {
-            throw new NotImplementedException();
+            return TripHandler.GetAllTrips();
         }
 
-        public List<Vehicle> GetAllVehicles()
+        public List<Vehicle> GetAllVehicles() // Weeee
         {
-            throw new NotImplementedException();
-        }
-
-        public CustomerBE GetCustomer(string mail)
-        {
-            throw new NotImplementedException();
+            return VehicleHandler.GetAllVehicles();
         }
 
         public Dock GetDock(int dockId)
         {
-            throw new NotImplementedException();
+            return DockHandler.GetDock(dockId);
         }
 
         public Ferry GetFerry(int ferryId)
         {
-            throw new NotImplementedException();
+            return FerryHandler.GetFerry(ferryId);
         }
 
         public Reservation GetReservation(int reservationId)
         {
-            throw new NotImplementedException();
+            return ReservationHandler.ReadReservation(reservationId);
         }
 
         public Route GetRoute(int routeId)
         {
-            throw new NotImplementedException();
+            return RouteHandler.GetRoute(routeId);
         }
 
         public Trip GetTrip(int tripId)
         {
-            throw new NotImplementedException();
+            return TripHandler.GetTrip(tripId);
         }
 
         public Vehicle GetVehicle(int vehicleId)
         {
-            throw new NotImplementedException();
+            return VehicleHandler.GetVehicle(vehicleId);
         }
 
-        public Contract.dto.Customer UpdateCustomer(Contract.dto.Customer customer)
+        public Customer UpdateCustomer(Customer customer)
         {
-            throw new NotImplementedException();
-        }
-
-        public CustomerBE UpdateCustomer(CustomerBE customer)
-        {
-            throw new NotImplementedException();
+            return CustomerHandler.UpdateCustomer(customer);
         }
 
         public Dock UpdateDock(Dock dock)
         {
-            throw new NotImplementedException();
+            return DockHandler.UpdateDock(dock);
         }
 
         public Ferry UpdateFerry(Ferry ferry)
         {
-            throw new NotImplementedException();
+            return FerryHandler.UpdateFerry(ferry);
         }
 
         public Reservation UpdateReservation(Reservation reservation)
         {
-            throw new NotImplementedException();
+            return ReservationHandler.UpdateReservation(reservation);
         }
 
         public Route UpdateRoute(Route route)
         {
-            throw new NotImplementedException();
+            return RouteHandler.UpdateRoute(route);
         }
 
         public Trip UpdateTrip(Trip trip)
         {
-            throw new NotImplementedException();
+            return TripHandler.UpdateTrip(trip);
         }
 
         public Vehicle UpdateVehicle(Vehicle vehicle)
         {
-            throw new NotImplementedException();
+            return VehicleHandler.UpdateVehicle(vehicle);
         }
 
         List<Customer> AdminstrationContract.GetAllCustomer()
         {
-            throw new NotImplementedException();
+            return CustomerHandler.ReadAllCustomer();
         }
 
         Customer AdminstrationContract.GetCustomer(string mail)
         {
-            throw new NotImplementedException();
+            return CustomerHandler.ReadCustomer(mail);
         }
     }
 }
