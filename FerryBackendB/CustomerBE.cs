@@ -1,9 +1,5 @@
-﻿using System;
+﻿using Contract.dto;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Contract.dto;
 
 namespace FerryBackendB
 {
@@ -15,17 +11,17 @@ namespace FerryBackendB
             return ReservationHandler.CancelCustomerReservation(reservation);
         }
 
-        public bool CreateCustomer(Contract.dto.Customer customer)
+        public bool CreateCustomer(Customer customer)
         {
             return (CustomerHandler.CreateCustomer(customer).CustomerId != 0);
         }
 
-        public Reservation CreateCustomerReservation(Trip trip, Contract.dto.Customer customer, double totalPrice, int numberOfPeople, Vehicle vehicle)
+        public Reservation CreateCustomerReservation(Trip trip, Customer customer, double totalPrice, int numberOfPeople, Vehicle vehicle)
         {
             return ReservationHandler.CreateCustomerReservation(trip, customer, totalPrice, numberOfPeople, vehicle);
         }
 
-        public List<Reservation> GetAllCustomerReservations(Contract.dto.Customer customer)
+        public List<Reservation> GetAllCustomerReservations(Customer customer)
         {
             return ReservationHandler.ReadAllCustomerReservations(customer);
         }

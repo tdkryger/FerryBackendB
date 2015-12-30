@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Contract.contract;
+﻿using Contract.contract;
 using Contract.dto;
+using System.Collections.Generic;
 
 namespace FerryBackendB
 {
-    public class AdministrationBE : Contract.contract.AdminstrationContract
+    public class AdministrationBE : AdminstrationContract
     {
-        public Contract.dto.Customer CreateCustomer(Contract.dto.Customer customer)
+        public Customer CreateCustomer(Customer customer)
         {
             return  CustomerHandler.CreateCustomer(customer);
         }
