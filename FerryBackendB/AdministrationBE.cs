@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Contract.contract;
 using Contract.dto;
 
 namespace FerryBackendB
 {
-    public class Administration : Contract.contract.AdminstrationContract
+    public class AdministrationBE : Contract.contract.AdminstrationContract
     {
-        public Customer CreateCustomer(Customer customer)
+        public Contract.dto.Customer CreateCustomer(Contract.dto.Customer customer)
         {
-            throw new NotImplementedException();
+            return  CustomerHandler.CreateCustomer(customer);
         }
 
         public Dock CreateDock(Dock dock)
@@ -44,7 +45,12 @@ namespace FerryBackendB
             throw new NotImplementedException();
         }
 
-        public bool DeleteCustomer(Customer customer)
+        public bool DeleteCustomer(Contract.dto.Customer customer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteCustomer(CustomerBE customer)
         {
             throw new NotImplementedException();
         }
@@ -79,7 +85,7 @@ namespace FerryBackendB
             throw new NotImplementedException();
         }
 
-        public List<Customer> GetAllCustomer()
+        public List<CustomerBE> GetAllCustomer()
         {
             throw new NotImplementedException();
         }
@@ -114,7 +120,7 @@ namespace FerryBackendB
             throw new NotImplementedException();
         }
 
-        public Customer GetCustomer(string mail)
+        public CustomerBE GetCustomer(string mail)
         {
             throw new NotImplementedException();
         }
@@ -149,7 +155,12 @@ namespace FerryBackendB
             throw new NotImplementedException();
         }
 
-        public Customer UpdateCustomer(Customer customer)
+        public Contract.dto.Customer UpdateCustomer(Contract.dto.Customer customer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CustomerBE UpdateCustomer(CustomerBE customer)
         {
             throw new NotImplementedException();
         }
@@ -180,6 +191,16 @@ namespace FerryBackendB
         }
 
         public Vehicle UpdateVehicle(Vehicle vehicle)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<Customer> AdminstrationContract.GetAllCustomer()
+        {
+            throw new NotImplementedException();
+        }
+
+        Customer AdminstrationContract.GetCustomer(string mail)
         {
             throw new NotImplementedException();
         }
