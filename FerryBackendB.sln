@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FerryBackendB", "FerryBacke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contract", "Contract\Contract.csproj", "{E0B09284-C1F4-444F-8E89-8EEF4CF832A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{5AC3149D-9495-431F-99F5-51E0DA149721}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E0B09284-C1F4-444F-8E89-8EEF4CF832A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0B09284-C1F4-444F-8E89-8EEF4CF832A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0B09284-C1F4-444F-8E89-8EEF4CF832A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AC3149D-9495-431F-99F5-51E0DA149721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AC3149D-9495-431F-99F5-51E0DA149721}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AC3149D-9495-431F-99F5-51E0DA149721}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AC3149D-9495-431F-99F5-51E0DA149721}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
