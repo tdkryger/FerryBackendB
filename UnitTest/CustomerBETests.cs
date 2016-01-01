@@ -11,7 +11,7 @@ namespace FerryBackendB.Tests
     [TestClass()]
     public class CustomerBETests
     {
-        [TestMethod()]
+        [TestMethod(), TestCategory("CustomerBE")]
         public void CreateCustomerTest()
         {
             CustomerBE cbe = new CustomerBE();
@@ -20,7 +20,7 @@ namespace FerryBackendB.Tests
         }
 
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("CustomerBE")]
         public void CreateCustomerReservationTest()
         {
             CustomerBE cbe = new CustomerBE();
@@ -35,7 +35,7 @@ namespace FerryBackendB.Tests
             Assert.AreNotEqual(0, r.ReservationId);
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("CustomerBE")]
         public void GetAllCustomerReservationsTest()
         {
             int testNumber = 10;
@@ -60,7 +60,7 @@ namespace FerryBackendB.Tests
             Assert.AreEqual(testNumber, l.Count);
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("CustomerBE")]
         public void GetAllTripsTest()
         {
             CustomerBE cbe = new CustomerBE();
@@ -68,7 +68,7 @@ namespace FerryBackendB.Tests
             Assert.AreNotEqual(0, l.Count);
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("CustomerBE")]
         public void GetCustomerByLoginTest()
         {
             CustomerBE cbe = new CustomerBE();
@@ -84,7 +84,7 @@ namespace FerryBackendB.Tests
             Assert.AreEqual(c.CustomerId, c2.CustomerId);
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("CustomerBE")]
         public void CancelCustomerReservationTest()
         {
             CustomerBE cbe = new CustomerBE();
@@ -101,7 +101,7 @@ namespace FerryBackendB.Tests
 
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("CustomerBE")]
         public void GetAllRoutesTest()
         {
             int testNumber = 0; // No way to create routes...
@@ -111,7 +111,7 @@ namespace FerryBackendB.Tests
             Assert.AreEqual(testNumber, l.Count);
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("CustomerBE")]
         public void GetAllVehiclesTest()
         {
             int testNumber = 0; // No way to create vehicles...

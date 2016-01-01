@@ -11,203 +11,248 @@ namespace FerryBackendB.Tests
     [TestClass()]
     public class AdministrationBETests
     {
-        [TestMethod()]
-        public void CreateCustomerTest()
+        [TestMethod(), TestCategory("AdministrationBE")]
+        public void CreateCustomerAdministrationTest()
         {
-            AdministrationBE a = new AdministrationBE();
+            AdministrationBE abe = new AdministrationBE();
             Contract.dto.Customer c = UnitTest.TestHelpers.randomCustomer();
-            c = a.CreateCustomer(c);
+            c.CustomerId = 0;
+            c = abe.CreateCustomer(c);
             Assert.AreNotEqual(0, c.CustomerId);
         }
 
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void CreateDockTest()
         {
-            Assert.Inconclusive("not done");
+            AdministrationBE abe = new AdministrationBE();
+            Contract.dto.Dock item = UnitTest.TestHelpers.randomDock();
+            item.DockId = 0;
+            item = abe.CreateDock(item);
+            Assert.AreNotEqual(0, item.DockId);
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void CreateFerryTest()
         {
-            Assert.Inconclusive("not done");
+            AdministrationBE abe = new AdministrationBE();
+            Contract.dto.Ferry item = UnitTest.TestHelpers.randomFerry();
+            item.FerryId = 0;
+            item = abe.CreateFerry(item);
+            Assert.AreNotEqual(0, item.FerryId);
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void CreateReservationTest()
         {
-            Assert.Inconclusive("not done");
+            AdministrationBE abe = new AdministrationBE();
+            Contract.dto.Reservation item = UnitTest.TestHelpers.randomReservation();
+            item.ReservationId = 0;
+            item = abe.CreateReservation(item);
+            Assert.AreNotEqual(0, item.ReservationId);
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void CreateRouteTest()
         {
-            Assert.Inconclusive("not done");
+            AdministrationBE abe = new AdministrationBE();
+            Contract.dto.Route item = UnitTest.TestHelpers.randomRoute();
+            item.RouteId = 0;
+            item = abe.CreateRoute(item);
+            Assert.AreNotEqual(0, item.RouteId);
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void CreateTripTest()
         {
-            Assert.Inconclusive("not done");
+            AdministrationBE abe = new AdministrationBE();
+            Contract.dto.Trip item = UnitTest.TestHelpers.randomTrip();
+            item.TripId = 0;
+            item = abe.CreateTrip(item);
+            Assert.AreNotEqual(0, item.TripId);
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void CreateVehicleTest()
         {
-            Assert.Inconclusive("not done");
+            AdministrationBE abe = new AdministrationBE();
+            Contract.dto.Vehicle item = UnitTest.TestHelpers.randomVehicle();
+            item.VehicleId = 0;
+            item = abe.CreateVehicle(item);
+            Assert.AreNotEqual(0, item.VehicleId);
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void DeleteCustomerTest()
         {
-            Assert.Inconclusive("not done");
+            AdministrationBE abe = new AdministrationBE();
+            Contract.dto.Customer c = UnitTest.TestHelpers.randomCustomer();
+            c.CustomerId = 0;
+            c = abe.CreateCustomer(c);
+            Assert.IsTrue(abe.DeleteCustomer(c));
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void DeleteDockTest()
         {
-            Assert.Inconclusive("not done");
+            AdministrationBE abe = new AdministrationBE();
+            Contract.dto.Dock item = UnitTest.TestHelpers.randomDock();
+            item.DockId = 0;
+            item = abe.CreateDock(item);
+            Assert.IsTrue(abe.DeleteDock(item));
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void DeleteFerryTest()
         {
-            Assert.Inconclusive("not done");
+            AdministrationBE abe = new AdministrationBE();
+            Contract.dto.Ferry item = UnitTest.TestHelpers.randomFerry();
+            item.FerryId = 0;
+            item = abe.CreateFerry(item);
+            Assert.IsTrue(abe.DeleteFerry(item));
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void DeleteReservationTest()
         {
-            Assert.Inconclusive("not done");
+            AdministrationBE abe = new AdministrationBE();
+            Contract.dto.Reservation item = UnitTest.TestHelpers.randomReservation();
+            item.ReservationId = 0;
+            item = abe.CreateReservation(item);
+            Assert.IsTrue(abe.DeleteReservation(item));
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void DeleteRouteTest()
         {
-            Assert.Inconclusive("not done");
+            AdministrationBE abe = new AdministrationBE();
+            Contract.dto.Route item = UnitTest.TestHelpers.randomRoute();
+            item.RouteId = 0;
+            item = abe.CreateRoute(item);
+            Assert.IsTrue(abe.DeleteRoute(item));
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void DeleteTripTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void DeleteVehicleTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void GetAllDocksTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void GetAllFerriesTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void GetAllReservationsTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void GetAllRoutesTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void GetAllTripsTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void GetAllVehiclesTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void GetDockTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void GetFerryTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void GetReservationTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void GetRouteTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void GetTripTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void GetVehicleTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void UpdateCustomerTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void UpdateDockTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void UpdateFerryTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void UpdateReservationTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void UpdateRouteTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void UpdateTripTest()
         {
             Assert.Inconclusive("not done");
         }
 
-        [TestMethod()]
+        [TestMethod(), TestCategory("AdministrationBE")]
         public void UpdateVehicleTest()
         {
             Assert.Inconclusive("not done");
