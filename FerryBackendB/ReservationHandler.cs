@@ -5,6 +5,13 @@ namespace FerryBackendB
 {
     static class ReservationHandler
     {
+
+        public static bool CancelCustomerReservation(int reservationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        [Obsolete("Change in interface", true)]
         public static bool CancelCustomerReservation(Contract.dto.Reservation reservation)
         {
             throw new NotImplementedException();

@@ -1,15 +1,11 @@
 ﻿using Contract.dto;
 using System.Collections.Generic;
+using System;
 
 namespace FerryBackendB
 {
     public class CustomerBE : Contract.contract.CustomerContract
     {
-
-        public bool CancelCustomerReservation(Reservation reservation)
-        {
-            return ReservationHandler.CancelCustomerReservation(reservation);
-        }
 
         public bool CreateCustomer(Customer customer)
         {
@@ -34,6 +30,21 @@ namespace FerryBackendB
         public Contract.dto.Customer GetCustomerByLogin(string username, string password)
         {
             return CustomerHandler.ReadCustomer(username, password);
+        }
+
+        public bool CancelCustomerReservation(int reservationId)
+        {
+            return ReservationHandler.CancelCustomerReservation(reservationId);
+        }
+
+        public List<Route> GetAllRoutes()
+        {
+            return RouteHandler.GetAllRoutes();
+        }
+
+        public List<Vehicle> GetAllVehicles()
+        {
+            return VehicleHandler.GetAllVehicles();
         }
     }
 }
