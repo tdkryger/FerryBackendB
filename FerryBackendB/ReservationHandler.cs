@@ -80,18 +80,26 @@ namespace FerryBackendB
 
         public static List<Contract.dto.Reservation> ReadAllCustomerReservations(Contract.dto.Customer customer)
         {
-            throw new NotImplementedException();
+            List<Contract.dto.Reservation> l = new List<Contract.dto.Reservation>();
+            int max = MySQLConn.GenerateRandomId(0, 100);
+            for(int i = 0; i<= max; i++)
+            {
+                Contract.dto.Reservation r = ReadReservation(i);
+                r.Customer = customer;
+                l.Add(r);
+            }
+            return l;
         }
 
 
         public static Contract.dto.Reservation UpdateReservation(Contract.dto.Reservation reservation)
         {
-            throw new NotImplementedException();
+            return reservation;
         }
 
         public static bool DeleteReservation(Contract.dto.Reservation reservation)
         {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }
