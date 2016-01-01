@@ -24,193 +24,193 @@ namespace FerryBackendB.Tests
         [TestMethod()]
         public void CreateDockTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void CreateFerryTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void CreateReservationTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void CreateRouteTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void CreateTripTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void CreateVehicleTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void DeleteCustomerTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void DeleteDockTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void DeleteFerryTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void DeleteReservationTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void DeleteRouteTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void DeleteTripTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void DeleteVehicleTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void GetAllDocksTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void GetAllFerriesTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void GetAllReservationsTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void GetAllRoutesTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void GetAllTripsTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void GetAllVehiclesTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void GetDockTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void GetFerryTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void GetReservationTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void GetRouteTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void GetTripTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void GetVehicleTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void UpdateCustomerTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void UpdateDockTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void UpdateFerryTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void UpdateReservationTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void UpdateRouteTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void UpdateTripTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void UpdateVehicleTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
     }
 }

@@ -23,43 +23,43 @@ namespace FerryBackendB.Tests
         [TestMethod()]
         public void CreateCustomerReservationTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void GetAllCustomerReservationsTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void GetAllTripsTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void GetCustomerByLoginTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void CancelCustomerReservationTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void GetAllRoutesTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
 
         [TestMethod()]
         public void GetAllVehiclesTest()
         {
-            Assert.Fail();
+            Assert.Inconclusive("not done");
         }
     }
 }
