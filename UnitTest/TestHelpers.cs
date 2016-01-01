@@ -76,6 +76,68 @@ namespace UnitTest
                 FerryCapacity = GenerateRandomId(1, 10)
             };
         }
+
+        public static Contract.dto.Ferry randomFerry()
+        {
+            return new Contract.dto.Ferry()
+            {
+                Dock = randomDock(),
+                FerryId = GenerateRandomId(),
+                FerryName = RandomWords(10),
+                FerrySize = RandomWords(10),
+                Municipality = RandomWords(10),
+                PassengerCapacity = GenerateRandomId(10, 500),
+                VehicleCapacity = GenerateRandomId(10, 500),
+            };
+
+        }
+
+        public static Contract.dto.Reservation randomReservation()
+        {
+            return new Contract.dto.Reservation()
+            {
+                Customer = randomCustomer(),
+                NumberOfPeople = GenerateRandomId(1, 10),
+                ReservationId = GenerateRandomId(),
+                TotalPrice = (double)(GenerateRandomId(1000, 10000) / 10),
+                Trip = randomTrip(),
+                Vehicle = randomVehicle()
+            };
+        }
+
+        public static Contract.dto.Route randomRoute()
+        {
+            return new Contract.dto.Route()
+            {
+                Depature = RandomWords(30),
+                Destination = RandomWords(30),
+                Duration = GenerateRandomId(10, 1000),
+                RouteId = GenerateRandomId()
+            };
+        }
+
+        public static Contract.dto.Trip randomTrip()
+        {
+            return new Contract.dto.Trip()
+            {
+                DepatureTime = DateTime.Now,
+                Ferry = randomFerry(),
+                Route = randomRoute(),
+                TripId = GenerateRandomId(),
+                TripPrice = (double)(GenerateRandomId(1000, 10000) / 10)
+            };
+        }
+
+        public static Contract.dto.Vehicle randomVehicle()
+        {
+            return new Contract.dto.Vehicle()
+            {
+                VehicleId = GenerateRandomId(),
+                VehiclePrice = (double)(GenerateRandomId(1000, 10000) / 10),
+                VehicleSize = GenerateRandomId(1, 10),
+                VehicleType = RandomWords(10)
+            };
+        }
         #endregion
     }
 }
