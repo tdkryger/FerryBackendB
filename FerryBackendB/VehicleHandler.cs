@@ -5,6 +5,11 @@ namespace FerryBackendB
 {
     static class VehicleHandler
     {
+        public static Contract.dto.Vehicle random()
+        {
+            throw new NotImplementedException();
+        }
+
         public static Contract.dto.Vehicle CreateVehicle(Contract.dto.Vehicle vehicle)
         {
             throw new NotImplementedException();

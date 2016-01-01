@@ -5,6 +5,11 @@ namespace FerryBackendB
 {
     static class TripHandler
     {
+        public static Contract.dto.Trip random()
+        {
+            throw new NotImplementedException();
+        }
+
         public static Contract.dto.Trip CreateTrip(Contract.dto.Trip trip)
         {
             throw new NotImplementedException();

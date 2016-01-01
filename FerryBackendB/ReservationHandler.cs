@@ -5,31 +5,62 @@ namespace FerryBackendB
 {
     static class ReservationHandler
     {
+        public static Contract.dto.Reservation random()
+        {
+            return new Contract.dto.Reservation()
+            {
+                Customer = CustomerHandler.random(),
+                NumberOfPeople = MySQLConn.GenerateRandomId(1, 10),
+                ReservationId = MySQLConn.GenerateRandomId(),
+                TotalPrice = (double)(MySQLConn.GenerateRandomId(1000, 10000) / 10),
+                Trip = TripHandler.random(),
+                Vehicle = VehicleHandler.random()
+            };
+        }
+
 
         public static bool CancelCustomerReservation(int reservationId)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         [Obsolete("Change in interface", true)]
         public static bool CancelCustomerReservation(Contract.dto.Reservation reservation)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
-        public static Contract.dto.Reservation CreateCustomerReservation(Contract.dto.Trip trip, Contract.dto.Customer customer, double totalPrice, int numberOfPeople, Contract.dto.Vehicle vehicle)
+        public static Contract.dto.Reservation CreateCustomerReservation(
+            Contract.dto.Trip trip, 
+            Contract.dto.Customer customer, 
+            double totalPrice, 
+            int numberOfPeople, 
+            Contract.dto.Vehicle vehicle)
         {
-            throw new NotImplementedException();
+            Contract.dto.Reservation r = new Contract.dto.Reservation()
+            {
+                Customer = customer,
+                NumberOfPeople = numberOfPeople,
+                ReservationId = MySQLConn.GenerateRandomId(),
+                TotalPrice = totalPrice,
+                Trip = trip,
+                Vehicle = vehicle,                
+            };
+
+            return r;
         }
 
         public static Contract.dto.Reservation CreateReservation(Contract.dto.Reservation reservation)
         {
-            throw new NotImplementedException();
+            reservation.ReservationId = MySQLConn.GenerateRandomId();
+            return reservation;
         }
 
         public static Contract.dto.Reservation ReadReservation(int reservationId)
         {
-            throw new NotImplementedException();
+            Contract.dto.Reservation r = random();
+            r.ReservationId = reservationId;
+            return r;
         }
 
         /// <summary>
@@ -38,7 +69,13 @@ namespace FerryBackendB
         /// <returns></returns>
         public static List<Contract.dto.Reservation> ReadAllReservations()
         {
-            throw new NotImplementedException();
+            List<Contract.dto.Reservation> l = new List<Contract.dto.Reservation>();
+            int max = MySQLConn.GenerateRandomId(1000, int.MaxValue);
+            for(int i=1; i < max;i++)
+            {
+                l.Add(ReadReservation(i));
+            }
+            return l;
         }
 
         public static List<Contract.dto.Reservation> ReadAllCustomerReservations(Contract.dto.Customer customer)

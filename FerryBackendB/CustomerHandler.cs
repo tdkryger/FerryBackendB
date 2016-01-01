@@ -5,6 +5,27 @@ namespace FerryBackendB
 {
     static class CustomerHandler
     {
+        public static Contract.dto.Customer random()
+        {
+            int free = MySQLConn.GenerateRandomId(0, 10);
+            Contract.dto.Customer c = new Contract.dto.Customer()
+            {
+                AmountOfFreeRides = free,
+                City = MySQLConn.RandomWords(10),
+                CustomerId = MySQLConn.GenerateRandomId(),
+                Firstname = MySQLConn.RandomWords(10),
+                HouseNumber = MySQLConn.GenerateRandomId(1, 300).ToString(),
+                Lastname = MySQLConn.RandomWords(10),
+                Mail = MySQLConn.RandomWords(10),
+                Native = (free > 0),
+                Password = MySQLConn.RandomWords(10),
+                Phone = "12345678",
+                PostalCode = 1,
+                Street = MySQLConn.RandomWords(10)
+            };
+            return c;
+        }
+
         public static Contract.dto.Customer CreateCustomer(Contract.dto.Customer customer)
         {
             customer.CustomerId = MySQLConn.GenerateRandomId();
@@ -67,21 +88,8 @@ namespace FerryBackendB
             for (int i = 1; i < max; i++)
             {
                 int free = MySQLConn.GenerateRandomId(0, 10);
-                Contract.dto.Customer c = new Contract.dto.Customer()
-                {
-                    AmountOfFreeRides = free,
-                    City = MySQLConn.RandomWords(10),
-                    CustomerId = i,
-                    Firstname = MySQLConn.RandomWords(10),
-                    HouseNumber = MySQLConn.GenerateRandomId(1, 300).ToString(),
-                    Lastname = MySQLConn.RandomWords(10),
-                    Mail = MySQLConn.RandomWords(10),
-                    Native = (free > 0),
-                    Password = MySQLConn.RandomWords(10),
-                    Phone = "12345678",
-                    PostalCode = 1,
-                    Street = MySQLConn.RandomWords(10)
-                };
+                Contract.dto.Customer c = random();
+                c.CustomerId = i;
                 ll.Add(c);
             }
 

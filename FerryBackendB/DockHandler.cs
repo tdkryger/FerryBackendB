@@ -5,8 +5,7 @@ namespace FerryBackendB
 {
     static class DockHandler
     {
-        #region Private methods
-        private static Contract.dto.Dock randomDock()
+        public static Contract.dto.Dock random()
         {
             return new Contract.dto.Dock()
             {
@@ -15,7 +14,6 @@ namespace FerryBackendB
                 FerryCapacity = MySQLConn.GenerateRandomId(1, 10)
             };
         }
-        #endregion
 
         public static Contract.dto.Dock CreateDock(Contract.dto.Dock dock)
         {
@@ -29,7 +27,7 @@ namespace FerryBackendB
             int max = MySQLConn.GenerateRandomId(2, 10000);
             for (int i = 1; i < max; i++)
             {
-                Contract.dto.Dock d = randomDock();
+                Contract.dto.Dock d = random();
                 d.DockId = i;
                 l.Add(d);
             }
@@ -38,7 +36,7 @@ namespace FerryBackendB
 
         public static Contract.dto.Dock GetDock(int dockId)
         {
-            Contract.dto.Dock d = randomDock();
+            Contract.dto.Dock d = random();
             d.DockId = dockId;
             return d;
         }

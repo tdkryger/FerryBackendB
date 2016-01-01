@@ -5,6 +5,11 @@ namespace FerryBackendB
 {
     static class RouteHandler
     {
+        public static Contract.dto.Route random()
+        {
+            throw new NotImplementedException();
+        }
+
         public static Contract.dto.Route CreateRoute(Contract.dto.Route route)
         {
             throw new NotImplementedException();
