@@ -1,55 +1,145 @@
-﻿using System;
+﻿using Contract.dto;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 
 namespace FerryBackendB
 {
-    static class DockHandler
+    /// <summary>
+    /// 
+    /// </summary>
+    public static class DockHandler
     {
-        public static Contract.dto.Dock random()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dock"></param>
+        /// <returns></returns>
+        public static Dock CreateDock(Dock dock)
         {
-            return new Contract.dto.Dock()
+            DBUtility.HandleConnection((MySqlCommand command) =>
             {
-                DockId = MySQLConn.GenerateRandomId(),
-                DockName = MySQLConn.RandomWords(25),
-                FerryCapacity = MySQLConn.GenerateRandomId(1, 10)
-            };
-        }
+                command.CommandText = "INSERT INTO dock (name, ferry_capacity) VALUES (@name, @ferry_capacity);select last_insert_id();";
 
-        public static Contract.dto.Dock CreateDock(Contract.dto.Dock dock)
-        {
-            dock.DockId = MySQLConn.GenerateRandomId();
+                command.Parameters.AddWithValue("@name", dock.DockName);
+                command.Parameters.AddWithValue("@ferry_capacity", dock.FerryCapacity);
+
+                dock.DockId = Convert.ToInt32(command.ExecuteScalar());
+            });
+
             return dock;
         }
 
-        public static List<Contract.dto.Dock> GetAllDocks() // silly ppl
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static List<Dock> GetAllDocks()
         {
-            List<Contract.dto.Dock> l = new List<Contract.dto.Dock>();
-            int max = MySQLConn.GenerateRandomId(2, 10000);
-            for (int i = 1; i < max; i++)
+            List<Dock> docks = new List<Dock>();
+
+            DBUtility.HandleConnection((MySqlCommand command) =>
             {
-                Contract.dto.Dock d = random();
-                d.DockId = i;
-                l.Add(d);
-            }
-            return l;
+                command.CommandText = "SELECT * FROM docks;";
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        docks.Add(new Dock()
+                        {
+                            DockId = reader.GetInt32("id"),
+                            DockName = reader.GetString("name"),
+                            FerryCapacity = reader.GetInt32("cferry_capacity")
+                        });
+                    }
+                }
+            });
+
+            return docks;
         }
 
-        public static Contract.dto.Dock GetDock(int dockId)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dockId"></param>
+        /// <returns></returns>
+        public static Dock GetDock(int dockId)
         {
-            Contract.dto.Dock d = random();
-            d.DockId = dockId;
-            return d;
-        }
+            Dock dock = null;
 
-        public static Contract.dto.Dock UpdateDock(Contract.dto.Dock dock)
-        {
+            DBUtility.HandleConnection((MySqlCommand command) =>
+            {
+                command.CommandText = "SELECT * FROM docks WHERE id = @id;";
+
+                command.Parameters.AddWithValue("@id", dockId);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        dock = new Dock()
+                        {
+                            DockId = reader.GetInt32("id"),
+                            DockName = reader.GetString("name"),
+                            FerryCapacity = reader.GetInt32("cferry_capacity")
+                        };
+                    }
+                }
+            });
+
             return dock;
         }
 
-
-        public static bool DeleteDock(Contract.dto.Dock dock)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dock"></param>
+        /// <returns></returns>
+        public static Dock UpdateDock(Dock dock)
         {
-            return true;
+            DBUtility.HandleConnection((MySqlCommand command) =>
+            {
+                command.CommandText = "UPDATE docks SET " +
+                                          "name = @name, " +
+                                          "ferry_capacity = @ferry_capacity " +
+                                          "WHERE id = @id;";
+
+                command.Parameters.AddWithValue("@name", dock.DockName);
+                command.Parameters.AddWithValue("@ferry_capacity", dock.FerryCapacity);
+                command.Parameters.AddWithValue("@id", dock.DockId);
+
+                int rowsAffected = command.ExecuteNonQuery();
+
+                //If the update fails, dock is set to null
+                if (rowsAffected != 1)
+                {
+                    dock = null;
+                }
+            });
+
+            return dock;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dock"></param>
+        /// <returns></returns>
+        public static bool DeleteDock(Dock dock)
+        {
+            bool result = false; ;
+
+            DBUtility.HandleConnection((MySqlCommand command) =>
+            {
+                command.CommandText = "DELETE FROM docks WHERE id = @id;";
+
+                command.Parameters.AddWithValue("@id", dock.DockId);
+
+                result = command.ExecuteNonQuery() == 1;
+            });
+
+            return result;
         }
     }
 }

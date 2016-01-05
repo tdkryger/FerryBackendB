@@ -1,57 +1,153 @@
-﻿using System;
+﻿using Contract.dto;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 
 namespace FerryBackendB
 {
-    static class TripHandler
+    /// <summary>
+    /// 
+    /// </summary>
+    public static class TripHandler
     {
-        public static Contract.dto.Trip random()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="trip"></param>
+        /// <returns></returns>
+        public static Trip CreateTrip(Trip trip)
         {
-            return new Contract.dto.Trip()
+            DBUtility.HandleConnection((MySqlCommand command) =>
             {
-                DepatureTime = DateTime.Now,
-                Ferry = FerryHandler.random(),
-                Route = RouteHandler.random(),
-                TripId = MySQLConn.GenerateRandomId(),
-                TripPrice = (double)(MySQLConn.GenerateRandomId(1000, 10000) / 10)
-            };
-        }
+                command.CommandText = "INSERT INTO trips (departure_time, route_id, ferry_id, price) VALUES (@departure_time, @route_id, @ferry_id, @price);select last_insert_id();";
 
-        public static Contract.dto.Trip CreateTrip(Contract.dto.Trip trip)
-        {
-            trip.TripId = MySQLConn.GenerateRandomId();
+                command.Parameters.AddWithValue("@departure_time", trip.DepatureTime);
+                command.Parameters.AddWithValue("@route_id", trip.Route.RouteId);
+                command.Parameters.AddWithValue("@ferry_id", trip.Ferry.FerryId);
+                command.Parameters.AddWithValue("@price", trip.TripPrice);
+
+                trip.TripId = Convert.ToInt32(command.ExecuteScalar());
+            });
+
             return trip;
         }
 
-        public static Contract.dto.Trip GetTrip(int tripId)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tripId"></param>
+        /// <returns></returns>
+        public static Trip GetTrip(int tripId)
         {
-            Contract.dto.Trip trip = random();
-            trip.TripId = MySQLConn.GenerateRandomId();
-            return trip;
-        }
+            Trip trip = null;
 
-        public static List<Contract.dto.Trip> GetAllTrips()
-        {
-            List<Contract.dto.Trip> l = new List<Contract.dto.Trip>();
-            int max = MySQLConn.GenerateRandomId(10, 10000);
-            for (int i = 1; i <= max; i++)
+            DBUtility.HandleConnection((MySqlCommand command) =>
             {
-                Contract.dto.Trip r = random();
-                r.TripId = i;
-                l.Add(r);
-            }
-            return l;
-        }
+                command.CommandText = "SELECT * FROM trips WHERE id = @id;";
 
-        public static Contract.dto.Trip UpdateTrip(Contract.dto.Trip trip)
-        {
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        trip = new Trip()
+                        {
+                            TripId = reader.GetInt32("id"),
+                            DepatureTime = reader.GetDateTime("departure_time"),
+                            Ferry = FerryHandler.GetFerry(reader.GetInt32("ferry_id")),
+                            Route = RouteHandler.GetRoute(reader.GetInt32("route_id")),
+                            TripPrice = reader.GetDouble("price") // Possible loss of precision, use decimal instead
+                        };
+                    }
+                }
+            });
+
             return trip;
         }
 
-
-        public static bool DeleteTrip(Contract.dto.Trip trip)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static List<Trip> GetAllTrips()
         {
-            return true;
+            List<Trip> trips = new List<Trip>();
+
+            DBUtility.HandleConnection((MySqlCommand command) =>
+            {
+                command.CommandText = "SELECT * FROM trips;";
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        trips.Add(new Trip()
+                        {
+                            TripId = reader.GetInt32("id"),
+                            DepatureTime = reader.GetDateTime("departure_time"),
+                            Ferry = FerryHandler.GetFerry(reader.GetInt32("ferry_id")),
+                            Route = RouteHandler.GetRoute(reader.GetInt32("route_id")),
+                            TripPrice = reader.GetDouble("price") // Possible loss of precision, use decimal instead
+                        });
+                    }
+                }
+            });
+
+            return trips;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="trip"></param>
+        /// <returns></returns>
+        public static Trip UpdateTrip(Trip trip)
+        {
+            DBUtility.HandleConnection((MySqlCommand command) =>
+            {
+                command.CommandText = "UPDATE trips SET " +
+                                      "departure_time = @departure_time, " +
+                                      "route_id = @route_id, " +
+                                      "ferry_id = @ferry_id, " +
+                                      "price = @price " +
+                                      "WHERE id = @id;";
+
+                command.Parameters.AddWithValue("@departure_time", trip.DepatureTime);
+                command.Parameters.AddWithValue("@route_id", trip.Route.RouteId);
+                command.Parameters.AddWithValue("@ferry_id", trip.Ferry.FerryId);
+                command.Parameters.AddWithValue("@price", trip.TripPrice); //Again, possible loss of precision
+                command.Parameters.AddWithValue("@id", trip.TripId);
+
+                int rowsAffected = command.ExecuteNonQuery();
+
+                //If the update fails, dock is set to null
+                if (rowsAffected != 1)
+                {
+                    trip = null;
+                }
+            });
+
+            return trip;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="trip"></param>
+        /// <returns></returns>
+        public static bool DeleteTrip(Trip trip)
+        {
+            bool result = false; ;
+
+            DBUtility.HandleConnection((MySqlCommand command) =>
+            {
+                command.CommandText = "DELETE FROM trips WHERE id = @id;";
+
+                command.Parameters.AddWithValue("@id", trip.TripId);
+
+                result = command.ExecuteNonQuery() == 1;
+            });
+
+            return result;
         }
     }
 }

@@ -1,103 +1,170 @@
-﻿using System;
+﻿using Contract.dto;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 
 namespace FerryBackendB
 {
-    static class ReservationHandler
+    public static class ReservationHandler
     {
-        public static Contract.dto.Reservation random()
-        {
-            return new Contract.dto.Reservation()
-            {
-                Customer = CustomerHandler.random(),
-                NumberOfPeople = MySQLConn.GenerateRandomId(1, 10),
-                ReservationId = MySQLConn.GenerateRandomId(),
-                TotalPrice = (double)(MySQLConn.GenerateRandomId(1000, 10000) / 10),
-                Trip = TripHandler.random(),
-                Vehicle = VehicleHandler.random()
-            };
-        }
-
-
         public static bool CancelCustomerReservation(int reservationId)
         {
             return true;
         }
 
-        [Obsolete("Change in interface", true)]
-        public static bool CancelCustomerReservation(Contract.dto.Reservation reservation)
+        public static Reservation CreateCustomerReservation(
+            Trip trip,
+            Customer customer,
+            double totalPrice,
+            int numberOfPeople,
+            Vehicle vehicle)
         {
-            return true;
-        }
+            Reservation reservation = null;
 
-        public static Contract.dto.Reservation CreateCustomerReservation(
-            Contract.dto.Trip trip, 
-            Contract.dto.Customer customer, 
-            double totalPrice, 
-            int numberOfPeople, 
-            Contract.dto.Vehicle vehicle)
-        {
-            Contract.dto.Reservation r = new Contract.dto.Reservation()
-            {
-                Customer = customer,
-                NumberOfPeople = numberOfPeople,
-                ReservationId = MySQLConn.GenerateRandomId(),
-                TotalPrice = totalPrice,
-                Trip = trip,
-                Vehicle = vehicle,                
-            };
+            //DBUtility.HandleConnection((MySqlCommand command) =>
+            //{
+            //    command.CommandText = "INSERT INTO reservations (customer_id, trip_id, vehicle_id, total_price, number_of_people) VALUES (@customer_id, @trip_id, @vehicle_id, @total_price, @number_of_people);select last_insert_id();";
 
-            return r;
-        }
+            //    command.Parameters.AddWithValue("@customer_id", customer.CustomerId);
+            //    command.Parameters.AddWithValue("@trip_id", TripHandler.CreateTrip(new Trip()
+            //    {
+            //        // This aint working, we need more information, like departureDate
+            //    });
+            //});
 
-        public static Contract.dto.Reservation CreateReservation(Contract.dto.Reservation reservation)
-        {
-            reservation.ReservationId = MySQLConn.GenerateRandomId();
             return reservation;
         }
 
-        public static Contract.dto.Reservation ReadReservation(int reservationId)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <returns></returns>
+        public static Reservation CreateReservation(Reservation reservation)
         {
-            Contract.dto.Reservation r = random();
-            r.ReservationId = reservationId;
-            return r;
+            DBUtility.HandleConnection((MySqlCommand command) =>
+            {
+                command.CommandText = "INSERT INTO reservations (customer_id, trip_id, vehicle_id, total_price, number_of_people) VALUES (@customer_id, @trip_id, @vehicle_id, @total_price, @number_of_people);select last_insert_id();";
+
+                command.Parameters.AddWithValue("@customer_id", reservation.Customer.CustomerId);
+                command.Parameters.AddWithValue("@trip_id", reservation.Trip.TripId); //Should this be inserted here, or is it fine?
+                command.Parameters.AddWithValue("@vehicle_id", reservation.Vehicle.VehicleId);
+                command.Parameters.AddWithValue("@total_price", reservation.TotalPrice);
+                command.Parameters.AddWithValue("@number_of_people", reservation.NumberOfPeople);
+
+                reservation.ReservationId = Convert.ToInt32(command.ExecuteScalar());
+            });
+
+            return reservation;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reservationId"></param>
+        /// <returns></returns>
+        public static Reservation ReadReservation(int reservationId)
+        {
+            Reservation reservation = null;
+
+            DBUtility.HandleConnection((MySqlCommand command) =>
+            {
+                command.CommandText = "SELECT * FROM reservations WHERE id = @id;";
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        reservation = new Reservation()
+                        {
+                            ReservationId = reader.GetInt32("id"),
+                            Customer = CustomerHandler.GetCustomer(reader.GetInt32("customer_id")), //I made that method, is that okay?
+                            NumberOfPeople = reader.GetInt32("number_of_people"),
+                            TotalPrice = reader.GetInt32("total_price"),
+                            Trip = TripHandler.GetTrip(reader.GetInt32("trip_id")),
+                            Vehicle = VehicleHandler.GetVehicle(reader.GetInt32("vehicle_id"))
+                        };
+                    }
+                }
+            });
+
+            return reservation;
         }
 
         /// <summary>
         /// Loads of reservations in a few years..
         /// </summary>
         /// <returns></returns>
-        public static List<Contract.dto.Reservation> ReadAllReservations()
+        public static List<Reservation> ReadAllReservations()
         {
-            List<Contract.dto.Reservation> l = new List<Contract.dto.Reservation>();
-            int max = MySQLConn.GenerateRandomId(1000, int.MaxValue);
-            for(int i=1; i < max;i++)
+            List<Reservation> reservations = new List<Reservation>();
+
+            DBUtility.HandleConnection((MySqlCommand command) =>
             {
-                l.Add(ReadReservation(i));
-            }
-            return l;
+                command.CommandText = "SELECT * FROM reservations;";
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        reservations.Add(new Reservation()
+                        {
+                            ReservationId = reader.GetInt32("id"),
+                            Customer = CustomerHandler.GetCustomer(reader.GetInt32("customer_id")), //I made that method, is that okay?
+                            NumberOfPeople = reader.GetInt32("number_of_people"),
+                            TotalPrice = reader.GetInt32("total_price"),
+                            Trip = TripHandler.GetTrip(reader.GetInt32("trip_id")),
+                            Vehicle = VehicleHandler.GetVehicle(reader.GetInt32("vehicle_id"))
+                        });
+                    }
+                }
+            });
+
+            return reservations;
         }
 
-        public static List<Contract.dto.Reservation> ReadAllCustomerReservations(Contract.dto.Customer customer)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
+        public static List<Reservation> ReadAllCustomerReservations(Customer customer)
         {
-            List<Contract.dto.Reservation> l = new List<Contract.dto.Reservation>();
-            int max = MySQLConn.GenerateRandomId(0, 100);
-            for(int i = 0; i<= max; i++)
+            List<Reservation> reservations = new List<Reservation>();
+
+            DBUtility.HandleConnection((MySqlCommand command) =>
             {
-                Contract.dto.Reservation r = ReadReservation(i);
-                r.Customer = customer;
-                l.Add(r);
-            }
-            return l;
+                command.CommandText = "SELECT * FROM reservations WHERE customer_id = @customer_id;";
+
+                command.Parameters.AddWithValue("@customer_id", customer.CustomerId);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        reservations.Add(new Reservation()
+                        {
+                            ReservationId = reader.GetInt32("id"),
+                            Customer = CustomerHandler.GetCustomer(reader.GetInt32("customer_id")), //I made that method, is that okay?
+                            NumberOfPeople = reader.GetInt32("number_of_people"),
+                            TotalPrice = reader.GetInt32("total_price"),
+                            Trip = TripHandler.GetTrip(reader.GetInt32("trip_id")),
+                            Vehicle = VehicleHandler.GetVehicle(reader.GetInt32("vehicle_id"))
+                        });
+                    }
+                }
+            });
+
+            return reservations;
         }
 
 
-        public static Contract.dto.Reservation UpdateReservation(Contract.dto.Reservation reservation)
+        public static Reservation UpdateReservation(Reservation reservation)
         {
             return reservation;
         }
 
-        public static bool DeleteReservation(Contract.dto.Reservation reservation)
+        public static bool DeleteReservation(Reservation reservation)
         {
             return true;
         }

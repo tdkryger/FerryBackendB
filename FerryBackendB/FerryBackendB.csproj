@@ -49,7 +49,7 @@
     <Compile Include="CustomerHandler.cs" />
     <Compile Include="DockHandler.cs" />
     <Compile Include="FerryHandler.cs" />
-    <Compile Include="MySQLConn.cs" />
+    <Compile Include="DBUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReservationHandler.cs" />
     <Compile Include="RouteHandler.cs" />

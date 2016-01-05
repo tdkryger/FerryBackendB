@@ -1,42 +1,24 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Contract.dto;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Data;
 
 namespace FerryBackendB
 {
-    static class CustomerHandler
+    /// <summary>
+    /// 
+    /// </summary>
+    public static class CustomerHandler
     {
-        public static Contract.dto.Customer random()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
+        public static Customer CreateCustomer(Customer customer)
         {
-            int free = MySQLConn.GenerateRandomId(0, 10);
-            Contract.dto.Customer c = new Contract.dto.Customer()
+            DBUtility.HandleConnection((MySqlCommand command) =>
             {
-                AmountOfFreeRides = free,
-                City = MySQLConn.RandomWords(10),
-                CustomerId = MySQLConn.GenerateRandomId(),
-                Firstname = MySQLConn.RandomWords(10),
-                HouseNumber = MySQLConn.GenerateRandomId(1, 300).ToString(),
-                Lastname = MySQLConn.RandomWords(10),
-                Mail = MySQLConn.RandomWords(10),
-                Native = (free > 0),
-                Password = MySQLConn.RandomWords(10),
-                Phone = "12345678",
-                PostalCode = 1,
-                Street = MySQLConn.RandomWords(10)
-            };
-            return c;
-        }
-
-        public static Contract.dto.Customer CreateCustomer(Contract.dto.Customer customer)
-        {
-            MySqlConnection connection = MySQLConn.Connection();
-            MySqlCommand command;
-            connection.Open();
-
-            try
-            {
-                command = connection.CreateCommand();
                 command.CommandText = "INSERT INTO customers (first_name, last_name, mail, password, phone, postal_code, street, house_number, city, free_rides, native) VALUES (@first_name, @last_name, @mail, @password, @phone, @postal_code, @street, @house_number, @city, @free_rides, @native);select last_insert_id();";
                 command.Parameters.AddWithValue("@first_name", customer.Firstname);
                 command.Parameters.AddWithValue("@last_name", customer.Lastname);
@@ -50,20 +32,8 @@ namespace FerryBackendB
                 command.Parameters.AddWithValue("@city", customer.City);
                 command.Parameters.AddWithValue("@house_number", customer.HouseNumber);
 
-
                 customer.CustomerId = Convert.ToInt32(command.ExecuteScalar());
-            }
-            catch (Exception e)
-            {
-                //Do something with the error
-            }
-            finally
-            {
-                if (connection.State == ConnectionState.Open)
-                {
-                    connection.Close();
-                }
-            }
+            });
 
             return customer;
         }
@@ -74,71 +44,235 @@ namespace FerryBackendB
         /// <param name="username">dunno where to put this.. Sticking it in email..</param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public static Contract.dto.Customer ReadCustomer(string username, string password)
+        public static Customer ReadCustomer(string username, string password)
         {
-            int free = MySQLConn.GenerateRandomId(0, 10);
-            return new Contract.dto.Customer()
-            {
-                AmountOfFreeRides = free,
-                City = "Andeby",
-                CustomerId = MySQLConn.GenerateRandomId(),
-                Firstname = "Anders",
-                HouseNumber = "111",
-                Lastname = "And",
-                Mail = username,
-                Native = (free > 0),
-                Password = password,
-                Phone = "12345678",
-                PostalCode = 1,
-                Street = "Paradisæblevej"
-            };
-        }
-        public static Contract.dto.Customer ReadCustomer(string mail)
-        {
-            int free = MySQLConn.GenerateRandomId(0, 10);
-            return new Contract.dto.Customer()
-            {
-                AmountOfFreeRides = free,
-                City = "Andeby",
-                CustomerId = MySQLConn.GenerateRandomId(),
-                Firstname = "Anders",
-                HouseNumber = "111",
-                Lastname = "And",
-                Mail = mail,
-                Native = (free > 0),
-                Password = "",
-                Phone = "12345678",
-                PostalCode = 1,
-                Street = "Paradisæblevej"
-            };
-        }
-        /// <summary>
-        /// Retuens a list of somewhat random customers
-        /// </summary>
-        /// <returns></returns>
-        public static List<Contract.dto.Customer> ReadAllCustomer()
-        {
-            List<Contract.dto.Customer> ll = new List<Contract.dto.Customer>();
-            int max = MySQLConn.GenerateRandomId(10, 10000);
-            for (int i = 1; i < max; i++)
-            {
-                int free = MySQLConn.GenerateRandomId(0, 10);
-                Contract.dto.Customer c = random();
-                c.CustomerId = i;
-                ll.Add(c);
-            }
+            Customer customer;
 
-            return ll;
-        }
+            customer = null;
 
-        public static Contract.dto.Customer UpdateCustomer(Contract.dto.Customer customer)
-        {
+            DBUtility.HandleConnection((MySqlCommand command) =>
+            {
+                command.CommandText = "SELECT * FROM customers WHERE mail = @mail AND password = @password;";
+
+                command.Parameters.AddWithValue("@mail", username);
+                command.Parameters.AddWithValue("@password", password);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        customer = new Customer()
+                        {
+                            CustomerId = reader.GetInt32("id"),
+                            Firstname = reader.GetString("first_name"),
+                            Lastname = reader.GetString("last_name"),
+                            Mail = reader.GetString("mail"),
+                            Password = reader.GetString("password"),
+                            Street = reader.GetString("street"),
+                            HouseNumber = reader.GetString("house_number"),
+                            PostalCode = reader.GetInt32("postal_code"),
+                            City = reader.GetString("city"),
+                            Phone = reader.GetString("phone"),
+                            Native = reader.GetBoolean("native"),
+                            AmountOfFreeRides = reader.GetInt32("free_rides")
+                        };
+                    }
+                }
+            });
+
             return customer;
         }
 
-        public static bool DeleteCustomer(Contract.dto.Customer customer)
+        /// <summary>
+        /// Added because needed, not sure if we can do that?
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static Customer GetCustomer(int id)
         {
-            return true;
+            Customer customer;
+
+            customer = null;
+
+            DBUtility.HandleConnection((MySqlCommand command) =>
+            {
+                command.CommandText = "SELECT * FROM customers WHERE id = @id;";
+
+                command.Parameters.AddWithValue("@id", id);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        customer = new Customer()
+                        {
+                            CustomerId = reader.GetInt32("id"),
+                            Firstname = reader.GetString("first_name"),
+                            Lastname = reader.GetString("last_name"),
+                            Mail = reader.GetString("mail"),
+                            Password = reader.GetString("password"),
+                            Street = reader.GetString("street"),
+                            HouseNumber = reader.GetString("house_number"),
+                            PostalCode = reader.GetInt32("postal_code"),
+                            City = reader.GetString("city"),
+                            Phone = reader.GetString("phone"),
+                            Native = reader.GetBoolean("native"),
+                            AmountOfFreeRides = reader.GetInt32("free_rides")
+                        };
+                    }
+                }
+            });
+
+            return customer;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mail"></param>
+        /// <returns></returns>
+        public static Customer ReadCustomer(string mail)
+        {
+            Customer customer;
+
+            customer = null;
+
+            DBUtility.HandleConnection((MySqlCommand command) =>
+            {
+                command.CommandText = "SELECT * FROM customers WHERE mail = @mail;";
+
+                command.Parameters.AddWithValue("@mail", mail);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        customer = new Customer()
+                        {
+                            CustomerId = reader.GetInt32("id"),
+                            Firstname = reader.GetString("first_name"),
+                            Lastname = reader.GetString("last_name"),
+                            Mail = reader.GetString("mail"),
+                            Password = reader.GetString("password"),
+                            Street = reader.GetString("street"),
+                            HouseNumber = reader.GetString("house_number"),
+                            PostalCode = reader.GetInt32("postal_code"),
+                            City = reader.GetString("city"),
+                            Phone = reader.GetString("phone"),
+                            Native = reader.GetBoolean("native"),
+                            AmountOfFreeRides = reader.GetInt32("free_rides")
+                        };
+                    }
+                }
+            });
+
+            return customer;
+        }
+
+        /// <summary>
+        /// Returns a list of all the customers
+        /// </summary>
+        /// <returns></returns>
+        public static List<Customer> ReadAllCustomer()
+        {
+            List<Customer> customers = new List<Customer>();
+
+            DBUtility.HandleConnection((MySqlCommand command) =>
+            {
+                command.CommandText = "SELECT * FROM customers;";
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        customers.Add(new Customer()
+                        {
+                            CustomerId = reader.GetInt32("id"),
+                            Firstname = reader.GetString("first_name"),
+                            Lastname = reader.GetString("last_name"),
+                            Mail = reader.GetString("mail"),
+                            Password = reader.GetString("password"),
+                            Street = reader.GetString("street"),
+                            HouseNumber = reader.GetString("house_number"),
+                            PostalCode = reader.GetInt32("postal_code"),
+                            City = reader.GetString("city"),
+                            Phone = reader.GetString("phone"),
+                            Native = reader.GetBoolean("native"),
+                            AmountOfFreeRides = reader.GetInt32("free_rides")
+                        });
+                    }
+                }
+            });
+
+            return customers;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
+        public static Customer UpdateCustomer(Customer customer)
+        {
+            DBUtility.HandleConnection((MySqlCommand command) =>
+            {
+                command.CommandText = "UPDATE customers SET " +
+                                          "first_name = @first_name, " +
+                                          "last_name = @last_name, " +
+                                          "phone = @phone, " +
+                                          "mail = @mail, " +
+                                          "password = @password, " +
+                                          "house_number = @house_number, " +
+                                          "postal_code = @postal_code, " +
+                                          "city = @city, " +
+                                          "native = @native, " +
+                                          "free_rides = @free_rides " +
+                                          "WHERE id = @id;";
+
+                command.Parameters.AddWithValue("@first_name", customer.Firstname);
+                command.Parameters.AddWithValue("@last_name", customer.Lastname);
+                command.Parameters.AddWithValue("@phone", customer.Phone);
+                command.Parameters.AddWithValue("@mail", customer.Mail);
+                command.Parameters.AddWithValue("@password", customer.Password);
+                command.Parameters.AddWithValue("@house_number", customer.HouseNumber);
+                command.Parameters.AddWithValue("@postal_code", customer.PostalCode);
+                command.Parameters.AddWithValue("@street", customer.Street);
+                command.Parameters.AddWithValue("@city", customer.City);
+                command.Parameters.AddWithValue("@native", customer.Native);
+                command.Parameters.AddWithValue("@free_rides", customer.AmountOfFreeRides);
+                command.Parameters.AddWithValue("@id", customer.CustomerId);
+
+                int rowsAffected = command.ExecuteNonQuery();
+
+                //If the update fails, customer is set to null
+                if (rowsAffected != 1)
+                {
+                    customer = null;
+                }
+            });
+
+            return customer;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
+        public static bool DeleteCustomer(Customer customer)
+        {
+            bool result = false; ;
+
+            DBUtility.HandleConnection((MySqlCommand command) =>
+            {
+                command.CommandText = "DELETE FROM customers WHERE id = @id;";
+
+                command.Parameters.AddWithValue("@id", customer.CustomerId);
+
+                result = command.ExecuteNonQuery() == 1;
+            });
+
+            return result;
         }
     }
 }
