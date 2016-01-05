@@ -19,7 +19,7 @@ namespace FerryBackendB.Tests
             c.CustomerId = 0;
             c = abe.CreateCustomer(c);
 
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 100; i++)
             {
                 abe.CreateCustomer(UnitTest.TestHelpers.randomCustomer());
             }
