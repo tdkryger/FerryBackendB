@@ -16,6 +16,8 @@ namespace FerryBackendB.Tests
         {
             CustomerBE cbe = new CustomerBE();
             Contract.dto.Customer c = UnitTest.TestHelpers.randomCustomer();
+            c.CustomerId = 0;
+
             Assert.IsTrue(cbe.CreateCustomer(c));
         }
 

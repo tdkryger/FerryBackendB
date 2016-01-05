@@ -18,6 +18,12 @@ namespace FerryBackendB.Tests
             Contract.dto.Customer c = UnitTest.TestHelpers.randomCustomer();
             c.CustomerId = 0;
             c = abe.CreateCustomer(c);
+
+            for (int i = 0; i < 10000; i++)
+            {
+                abe.CreateCustomer(UnitTest.TestHelpers.randomCustomer());
+            }
+
             Assert.AreNotEqual(0, c.CustomerId);
         }
 

@@ -50,9 +50,9 @@ namespace FerryBackendB
         {
             return new MySql.Data.MySqlClient.MySqlConnection(
                 string.Format("Server = {0}; Database = {1}; Uid = {2}; Pwd = {3};",
-                "hostname",
-                "database",
-                "username",
+                "77.66.48.115",
+                "cluster_b",
+                "cluster_b",
                 "password"
                 ));
         }

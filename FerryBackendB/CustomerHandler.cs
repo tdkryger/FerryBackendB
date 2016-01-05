@@ -1,5 +1,7 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace FerryBackendB
 {
@@ -28,9 +30,42 @@ namespace FerryBackendB
 
         public static Contract.dto.Customer CreateCustomer(Contract.dto.Customer customer)
         {
-            customer.CustomerId = MySQLConn.GenerateRandomId();
-            return customer;
+            MySqlConnection connection = MySQLConn.Connection();
+            MySqlCommand command;
+            connection.Open();
 
+            try
+            {
+                command = connection.CreateCommand();
+                command.CommandText = "INSERT INTO customers (first_name, last_name, mail, password, phone, postal_code, street, house_number, city, free_rides, native) VALUES (@first_name, @last_name, @mail, @password, @phone, @postal_code, @street, @house_number, @city, @free_rides, @native);select last_insert_id();";
+                command.Parameters.AddWithValue("@first_name", customer.Firstname);
+                command.Parameters.AddWithValue("@last_name", customer.Lastname);
+                command.Parameters.AddWithValue("@mail", customer.Mail);
+                command.Parameters.AddWithValue("@password", customer.Password);
+                command.Parameters.AddWithValue("@phone", customer.Phone);
+                command.Parameters.AddWithValue("@postal_code", customer.PostalCode);
+                command.Parameters.AddWithValue("@street", customer.Street);
+                command.Parameters.AddWithValue("@free_rides", customer.AmountOfFreeRides);
+                command.Parameters.AddWithValue("@native", customer.Native);
+                command.Parameters.AddWithValue("@city", customer.City);
+                command.Parameters.AddWithValue("@house_number", customer.HouseNumber);
+
+
+                customer.CustomerId = Convert.ToInt32(command.ExecuteScalar());
+            }
+            catch (Exception e)
+            {
+                //Do something with the error
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
+
+            return customer;
         }
 
         /// <summary>

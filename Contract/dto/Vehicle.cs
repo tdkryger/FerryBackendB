@@ -18,6 +18,7 @@ namespace Contract.dto
         /// Contains vehicle unique id
         /// </value>
         public int VehicleId { get; set; }
+
         /// <summary>
         /// Property for the vehicle size
         /// </summary>
@@ -25,6 +26,7 @@ namespace Contract.dto
         /// Contains size of the vehicle (1 normal cars size i 1)
         /// </value>
         public int VehicleSize { get; set; }
+
         /// <summary>
         /// Property for vehicle type
         /// </summary>
@@ -32,6 +34,7 @@ namespace Contract.dto
         /// Contains the general name of the vehicle type
         /// </value>
         public string VehicleType { get; set; }
+
         /// <summary>
         /// Property for price
         /// </summary>
