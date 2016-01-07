@@ -131,7 +131,7 @@ namespace FerryBackendB
         /// <returns></returns>
         public static bool DeleteVehicle(Contract.dto.Vehicle vehicle)
         {
-            bool result = false; ;
+            bool result = false;
 
             DBUtility.HandleConnection((MySqlCommand command) =>
             {

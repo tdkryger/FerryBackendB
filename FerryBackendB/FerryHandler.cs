@@ -148,7 +148,7 @@ namespace FerryBackendB
         /// <returns></returns>
         public static bool DeleteFerry(Ferry ferry)
         {
-            bool result = false; ;
+            bool result = false;
 
             DBUtility.HandleConnection((MySqlCommand command) =>
             {

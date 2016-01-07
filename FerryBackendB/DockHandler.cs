@@ -128,7 +128,7 @@ namespace FerryBackendB
         /// <returns></returns>
         public static bool DeleteDock(Dock dock)
         {
-            bool result = false; ;
+            bool result = false;
 
             DBUtility.HandleConnection((MySqlCommand command) =>
             {

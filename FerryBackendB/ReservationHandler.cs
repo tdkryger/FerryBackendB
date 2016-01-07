@@ -1,4 +1,5 @@
 ﻿using Contract.dto;
+using Contract.eto;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -7,11 +8,25 @@ namespace FerryBackendB
 {
     public static class ReservationHandler
     {
+        /// <summary>
+        /// Should this delete the reservation, or what should it do?
+        /// </summary>
+        /// <param name="reservationId"></param>
+        /// <returns></returns>
         public static bool CancelCustomerReservation(int reservationId)
         {
-            return true;
+            throw new ReservationNotFoundException();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="trip"></param>
+        /// <param name="customer"></param>
+        /// <param name="totalPrice"></param>
+        /// <param name="numberOfPeople"></param>
+        /// <param name="vehicle"></param>
+        /// <returns></returns>
         public static Reservation CreateCustomerReservation(
             Trip trip,
             Customer customer,
@@ -21,16 +36,26 @@ namespace FerryBackendB
         {
             Reservation reservation = null;
 
-            //DBUtility.HandleConnection((MySqlCommand command) =>
-            //{
-            //    command.CommandText = "INSERT INTO reservations (customer_id, trip_id, vehicle_id, total_price, number_of_people) VALUES (@customer_id, @trip_id, @vehicle_id, @total_price, @number_of_people);select last_insert_id();";
+            DBUtility.HandleConnection((MySqlCommand command) =>
+            {
+                command.CommandText = "INSERT INTO reservations (customer_id, trip_id, vehicle_id, total_price, number_of_people) VALUES (@customer_id, @trip_id, @vehicle_id, @total_price, @number_of_people);select last_insert_id();";
 
-            //    command.Parameters.AddWithValue("@customer_id", customer.CustomerId);
-            //    command.Parameters.AddWithValue("@trip_id", TripHandler.CreateTrip(new Trip()
-            //    {
-            //        // This aint working, we need more information, like departureDate
-            //    });
-            //});
+                command.Parameters.AddWithValue("@customer_id", customer.CustomerId);
+                command.Parameters.AddWithValue("@trip_id", trip.TripId);
+                command.Parameters.AddWithValue("@vehicle_id", vehicle.VehicleId);
+                command.Parameters.AddWithValue("@total_price", totalPrice);
+                command.Parameters.AddWithValue("@number_of_people", numberOfPeople);
+
+                reservation = new Reservation()
+                {
+                    ReservationId = Convert.ToInt32(command.ExecuteScalar()),
+                    Customer = customer,
+                    NumberOfPeople = numberOfPeople,
+                    TotalPrice = totalPrice,
+                    Trip = trip,
+                    Vehicle = vehicle
+                };
+            });
 
             return reservation;
         }
@@ -47,7 +72,7 @@ namespace FerryBackendB
                 command.CommandText = "INSERT INTO reservations (customer_id, trip_id, vehicle_id, total_price, number_of_people) VALUES (@customer_id, @trip_id, @vehicle_id, @total_price, @number_of_people);select last_insert_id();";
 
                 command.Parameters.AddWithValue("@customer_id", reservation.Customer.CustomerId);
-                command.Parameters.AddWithValue("@trip_id", reservation.Trip.TripId); //Should this be inserted here, or is it fine?
+                command.Parameters.AddWithValue("@trip_id", reservation.Trip.TripId); //Should this be inserted in the db here, or is this fine?
                 command.Parameters.AddWithValue("@vehicle_id", reservation.Vehicle.VehicleId);
                 command.Parameters.AddWithValue("@total_price", reservation.TotalPrice);
                 command.Parameters.AddWithValue("@number_of_people", reservation.NumberOfPeople);
@@ -158,15 +183,60 @@ namespace FerryBackendB
             return reservations;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <returns></returns>
         public static Reservation UpdateReservation(Reservation reservation)
         {
+            DBUtility.HandleConnection((MySqlCommand command) =>
+            {
+                command.CommandText = "UPDATE reservations SET " +
+                                      "customer_id = @customer_id, " +
+                                      "trip_id = @trip_id, " +
+                                      "vehicle_id = @vehicle_id " +
+                                      "total_price = @total_price " +
+                                      "number_of_people = @number_of_people " +
+                                      "WHERE id = @id;";
+
+                command.Parameters.AddWithValue("@customer_id", reservation.Customer.CustomerId);
+                command.Parameters.AddWithValue("@trip_id", reservation.Trip.TripId); //Should this be inserted in the db here, or is this fine?
+                command.Parameters.AddWithValue("@vehicle_id", reservation.Vehicle.VehicleId);
+                command.Parameters.AddWithValue("@total_price", reservation.TotalPrice);
+                command.Parameters.AddWithValue("@number_of_people", reservation.NumberOfPeople);
+
+                int rowsAffected = command.ExecuteNonQuery();
+
+                //If the update fails, dock is set to null
+                if (rowsAffected != 1)
+                {
+                    reservation = null;
+                }
+            });
+
             return reservation;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <returns></returns>
         public static bool DeleteReservation(Reservation reservation)
         {
-            return true;
+            bool result = false; ;
+
+            DBUtility.HandleConnection((MySqlCommand command) =>
+            {
+                command.CommandText = "DELETE FROM reservations WHERE id = @id;";
+
+                command.Parameters.AddWithValue("@id", reservation.ReservationId);
+
+                result = command.ExecuteNonQuery() == 1;
+            });
+
+            return result;
         }
     }
 }

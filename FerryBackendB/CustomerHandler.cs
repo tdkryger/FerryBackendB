@@ -261,7 +261,7 @@ namespace FerryBackendB
         /// <returns></returns>
         public static bool DeleteCustomer(Customer customer)
         {
-            bool result = false; ;
+            bool result = false;
 
             DBUtility.HandleConnection((MySqlCommand command) =>
             {

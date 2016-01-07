@@ -136,7 +136,7 @@ namespace FerryBackendB
         /// <returns></returns>
         public static bool DeleteTrip(Trip trip)
         {
-            bool result = false; ;
+            bool result = false;
 
             DBUtility.HandleConnection((MySqlCommand command) =>
             {

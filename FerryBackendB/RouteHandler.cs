@@ -132,7 +132,7 @@ namespace FerryBackendB
         /// <returns></returns>
         public static bool DeleteRoute(Route route)
         {
-            bool result = false; ;
+            bool result = false;
 
             DBUtility.HandleConnection((MySqlCommand command) =>
             {
