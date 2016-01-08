@@ -15,7 +15,7 @@ namespace FerryBackendB
         /// <returns></returns>
         public static bool CancelCustomerReservation(int reservationId)
         {
-            throw new ReservationNotFoundException();
+            return DeleteReservation(new Reservation() { ReservationId = reservationId });
         }
 
         /// <summary>
