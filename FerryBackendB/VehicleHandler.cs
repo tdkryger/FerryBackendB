@@ -43,6 +43,7 @@ namespace FerryBackendB
             DBUtility.HandleConnection((MySqlCommand command) =>
             {
                 command.CommandText = "SELECT * FROM vehicles WHERE id = @id;";
+                command.Parameters.AddWithValue("@id", vehicleId);
 
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {

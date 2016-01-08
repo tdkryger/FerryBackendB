@@ -96,6 +96,8 @@ namespace FerryBackendB
             {
                 command.CommandText = "SELECT * FROM reservations WHERE id = @id;";
 
+                command.Parameters.AddWithValue("@id", reservationId);
+
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
@@ -165,7 +167,7 @@ namespace FerryBackendB
 
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         reservations.Add(new Reservation()
                         {

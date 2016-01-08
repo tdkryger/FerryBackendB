@@ -47,7 +47,7 @@ namespace FerryBackendB.Tests
             c.CustomerId = 1;
             cbe.CreateCustomer(c);
 
-            for (int i=1;i< testNumber; i++)
+            for (int i=0;i< testNumber; i++)
             {
                 cbe.CreateCustomerReservation(
                                 UnitTest.TestHelpers.randomTrip(),
@@ -77,12 +77,13 @@ namespace FerryBackendB.Tests
 
             Contract.dto.Customer c = UnitTest.TestHelpers.randomCustomer();
             c.CustomerId = 1;
-            c.Mail = "anders@and.com";
-            c.Password = "qwerty123456";
+            c.Mail = UnitTest.TestHelpers.RandomWords(UnitTest.TestHelpers.GenerateRandomId(5, 15));
+            c.Password = UnitTest.TestHelpers.RandomWords(UnitTest.TestHelpers.GenerateRandomId(5, 15));
             cbe.CreateCustomer(c);
 
             Contract.dto.Customer c2 = cbe.GetCustomerByLogin(c.Mail, c.Password);
 
+            /// This might work, but because we use random mail and password, it only works sometimes (Most of the time)
             Assert.AreEqual(c.CustomerId, c2.CustomerId);
         }
 
@@ -100,28 +101,24 @@ namespace FerryBackendB.Tests
                 );
 
             Assert.IsTrue(cbe.CancelCustomerReservation(r.ReservationId));
-
         }
 
         [TestMethod(), TestCategory("CustomerBE")]
         public void GetAllRoutesTest()
         {
-            int testNumber = 0; // No way to create routes...
             CustomerBE cbe = new CustomerBE();
 
             List<Contract.dto.Route> l = cbe.GetAllRoutes();
-            Assert.AreEqual(testNumber, l.Count);
+            Assert.IsTrue(l.Count >= 1);
         }
 
         [TestMethod(), TestCategory("CustomerBE")]
         public void GetAllVehiclesTest()
         {
-            int testNumber = 0; // No way to create vehicles...
             CustomerBE cbe = new CustomerBE();
 
             List<Contract.dto.Vehicle> l = cbe.GetAllVehicles();
-            Assert.AreEqual(testNumber, l.Count);
-
+            Assert.IsTrue(l.Count >= 1);
         }
     }
 }

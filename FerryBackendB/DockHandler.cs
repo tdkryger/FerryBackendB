@@ -19,7 +19,7 @@ namespace FerryBackendB
         {
             DBUtility.HandleConnection((MySqlCommand command) =>
             {
-                command.CommandText = "INSERT INTO dock (name, ferry_capacity) VALUES (@name, @ferry_capacity);select last_insert_id();";
+                command.CommandText = "INSERT INTO docks (name, ferry_capacity) VALUES (@name, @ferry_capacity);select last_insert_id();";
 
                 command.Parameters.AddWithValue("@name", dock.DockName);
                 command.Parameters.AddWithValue("@ferry_capacity", dock.FerryCapacity);
@@ -50,7 +50,7 @@ namespace FerryBackendB
                         {
                             DockId = reader.GetInt32("id"),
                             DockName = reader.GetString("name"),
-                            FerryCapacity = reader.GetInt32("cferry_capacity")
+                            FerryCapacity = reader.GetInt32("ferry_capacity")
                         });
                     }
                 }
@@ -82,7 +82,7 @@ namespace FerryBackendB
                         {
                             DockId = reader.GetInt32("id"),
                             DockName = reader.GetString("name"),
-                            FerryCapacity = reader.GetInt32("cferry_capacity")
+                            FerryCapacity = reader.GetInt32("ferry_capacity")
                         };
                     }
                 }

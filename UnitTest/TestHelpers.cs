@@ -109,8 +109,8 @@ namespace UnitTest
         {
             return new Contract.dto.Route()
             {
-                Depature = RandomWords(30),
-                Destination = RandomWords(30),
+                Depature = "1",
+                Destination = "2",
                 Duration = GenerateRandomId(10, 1000),
                 RouteId = GenerateRandomId()
             };

@@ -20,6 +20,7 @@ namespace FerryBackendB
             DBUtility.HandleConnection((MySqlCommand command) =>
             {
                 command.CommandText = "INSERT INTO routes (departure_dock_id, destination_dock_id, duration) VALUES (@departure_dock_id, @destination_dock_id, @duration);select last_insert_id();";
+
                 command.Parameters.AddWithValue("departure_dock_id", route.Depature); //This WILL crash, it should be a reference to a dock, not just a string
                 command.Parameters.AddWithValue("destination_dock_id", route.Destination); //This WILL crash, it should be a reference to a dock, not just a string
                 command.Parameters.AddWithValue("duration", route.Duration);
