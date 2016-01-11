@@ -1,5 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
+using System.Reflection;
+using System.Text;
 
 namespace FerryBackendB
 {
@@ -32,6 +34,53 @@ namespace FerryBackendB
                     connection.Close();
                 }
             }
+        }
+
+        public static T ReturnObjectFromReader<T>(MySqlDataReader reader)
+        {
+            T instanceOfT;
+
+            instanceOfT = default(T);
+
+            // For each entry (column) in the reader
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                string columnName = reader.GetName(i);
+
+                foreach (PropertyInfo property in typeof(T).GetProperties())
+                {
+                    StringBuilder propertyName;
+
+                    propertyName = new StringBuilder();
+
+                    for (int j = 0; j < reader.GetName(i).Length; j++)
+                    {
+                        if (j == 0)
+                            propertyName.Append(Char.ToUpper(reader.GetName(i)[j]));
+                        else
+                            if (reader.GetName(i)[j].Equals('_'))
+                        {
+                            j++;
+                            propertyName.Append(Char.ToUpper(reader.GetName(i)[j]));
+                        }
+                        else
+                            propertyName.Append(reader.GetName(i)[j]);
+                    }
+                    if (property.Name.Equals(columnName.ToString()))
+                    {
+                        Type type;
+                        object value;
+
+                        type = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+                        value = Convert.ChangeType(reader[i], type);
+
+                        property.SetValue(instanceOfT, value);
+                        break;
+                    }
+                }
+            }
+
+            return instanceOfT;
         }
     }
 }
